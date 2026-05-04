@@ -29,9 +29,45 @@ const Collection = () => {
     }
   };
 
+  const applyFilter = () => {
+    let productsCopy = products.slice();
+
+    if (category.length > 0) {
+      productsCopy = productsCopy.filter((item) =>
+        category.includes(item.category),
+      );
+    }
+
+    if (subCategory.length > 0) {
+      productsCopy = productsCopy.filter((item) =>
+        subCategory.includes(item.subCategory),
+      );
+    }
+
+    setFilterProducts(productsCopy);
+  };
+
+  const sortProducts = () => {
+    let fpCopy = filterProducts.slice();
+
+    switch (sortOption) {
+      case "low-high":
+        fpCopy.sort((a, b) => a.price - b.price);
+        break;
+      case "high-low":
+        fpCopy.sort((a, b) => b.price - a.price);
+        break;
+      default:
+        // For "relavent" or any other default sorting logic
+        break;
+    }
+
+    setFilterProducts(fpCopy);
+  };
+ 
   useEffect(() => {
-    setFilterProducts(products);
-  }, []);
+    applyFilter();
+  }, [category, subCategory]);
 
   return (
     <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 border-t">
